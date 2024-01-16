@@ -21,4 +21,4 @@ python3 sweeper.py 192.168.1.0/24 -ping -o output.txt
 | **Parameter** | **Description**                                                                                                                              |
 |---------------|----------------------------------------------------------------------------------------------------------------------------------------------|
 | -ping         | Runs a single ping packet. If response is there -> system is alive.                                                                          |
-| -o            | Creates a output.txt file with just the ip addresses, to further usage for example with nmap.  Example: 192.168.1.2 192.168.1.9 192.168.1.25 |
+| -o            | Creates a output.txt file with just the ip addresses, to further usage for example with nmap. |
