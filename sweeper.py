@@ -15,7 +15,7 @@ def scan_ip(ip, use_ping, output_file):
     ip_str = str(ip)
     try:
         if use_ping and ping_ip(ip_str):
-            print(f'{ip_str} is {Fore.GREEN}alive{Style.RESET_ALL}')
+            print(f'[+] {ip_str} is {Fore.GREEN}alive{Style.RESET_ALL}')
             save_ip_to_file(ip_str, output_file)
     except Exception as exc:
         print(f'Error checking {ip_str}: {exc}')
