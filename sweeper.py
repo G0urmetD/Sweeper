@@ -38,7 +38,7 @@ def main():
     output_file = args.output
 
     if not use_ping:
-        print("Error: Please choose either -ping.")
+        print("Error: Please use -ping.")
         return
 
     try:
