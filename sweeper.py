@@ -15,20 +15,31 @@ def ping_ip(ip):
     except subprocess.CalledProcessError:
         return False
 
-def resolve_hostname(ip):
+def resolve_hostname(ip, dns_server=None):
     try:
-        return socket.gethostbyaddr(ip)[0]
-    except socket.herror:
-        return None
-    except socket.timeout:
+        if dns_server:
+            resolver = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            resolver.settimeout(2)  # Timeout setzen (optional)
+            resolver.connect((dns_server, 53))
+            hostname = socket.gethostbyaddr(ip)[0]
+            resolver.close()
+        else:
+            hostname = socket.gethostbyaddr(ip)[0]
+        return hostname
+    except (socket.herror, socket.timeout):
         return None
 
-def scan_ip(ip, use_ping, use_dns, output_file):
+def scan_ip(ip, use_ping, use_dns, dns_server, output_file):
     ip_str = str(ip)
     try:
         if use_ping and ping_ip(ip_str):
-            print(f'[+] {ip_str} - {resolve_hostname(ip_str) if use_dns else ip_str} is {Fore.GREEN}alive{Style.RESET_ALL}')
-            save_ip_to_file(ip_str, resolve_hostname(ip_str) if use_dns else None, output_file)
+            if use_dns:
+                hostname = resolve_hostname(ip_str, dns_server)
+                print(f'[+] {ip_str} - {hostname if hostname else "Unknown"} is {Fore.GREEN}alive{Style.RESET_ALL}')
+                save_ip_to_file(ip_str, hostname, output_file)
+            else:
+                print(f'[+] {ip_str} is {Fore.GREEN}alive{Style.RESET_ALL}')
+                save_ip_to_file(ip_str, None, output_file)
     except Exception as exc:
         print(f'Error checking {ip_str}: {exc}')
 
@@ -45,6 +56,7 @@ def main():
     parser.add_argument('target', help='Target IP or CIDR range')
     parser.add_argument('-ping', action='store_true', help='Use ping for scanning')
     parser.add_argument('-dns', action='store_true', help='Resolve IP addresses to hostnames')
+    parser.add_argument('-dns_server', help='DNS server IP address')
     parser.add_argument('-o', '--output', help='Output file for IP addresses')
 
     args = parser.parse_args()
@@ -52,11 +64,15 @@ def main():
     target_ip = args.target
     use_ping = args.ping
     use_dns = args.dns
+    dns_server = args.dns_server
     output_file = args.output
 
     if not use_ping and use_dns:
         print("Error: Please use -ping when using -dns.")
         return
+
+    if use_dns and not dns_server:
+        dns_server = None  # Wenn -dns ohne -dns_server verwendet wird, verwende Standard-DNS-Konfiguration
 
     try:
         network = ip_network(target_ip, strict=False)
@@ -66,7 +82,7 @@ def main():
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         future_to_ip = {
-            executor.submit(scan_ip, ip, use_ping, use_dns, output_file): ip for ip in network.hosts()
+            executor.submit(scan_ip, ip, use_ping, use_dns, dns_server, output_file): ip for ip in network.hosts()
         }
 
     # Wait for all threads to complete
