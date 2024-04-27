@@ -23,10 +23,10 @@ def scan_ip(ip, use_ping, use_arp, output_file):
     ip_str = str(ip)
     try:
         if use_ping and ping_ip(ip_str):
-            print(f'[+] {Fore.YELLOW}{ip_str}{Style.RESET_ALL} is {Fore.GREEN}alive{Style.RESET_ALL} (Ping)')
+            print(f'{Fore.GREEN}[+] {Fore.YELLOW}{ip_str}{Style.RESET_ALL} is {Fore.GREEN}alive{Style.RESET_ALL} (Ping)')
             save_ip_to_file(ip_str, output_file)
         elif use_arp and arp_ping(ip_str):
-            print(f'[+] {Fore.YELLOW}{ip_str}{Style.RESET_ALL} is {Fore.GREEN}alive{Style.RESET_ALL} (ARP)')
+            print(f'{Fore.GREEN}[+] {Fore.YELLOW}{ip_str}{Style.RESET_ALL} is {Fore.GREEN}alive{Style.RESET_ALL} (ARP)')
             save_ip_to_file(ip_str, output_file)
     except Exception as exc:
         print(f'Error checking {ip_str}: {exc}')
