@@ -1,12 +1,10 @@
 import argparse
-import subprocess
 import concurrent.futures
-import socket
+import subprocess
 from ipaddress import ip_network
 from colorama import Fore, Style
-
-# sets the socket timeout for dns resolv higher (in seconds)
-socket.setdefaulttimeout(10)
+import time
+import socket
 
 def ping_ip(ip):
     try:
@@ -15,64 +13,68 @@ def ping_ip(ip):
     except subprocess.CalledProcessError:
         return False
 
-def resolve_hostname(ip, dns_server=None):
+def arp_ping(ip):
     try:
-        if dns_server:
-            resolver = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            resolver.settimeout(2)  # Timeout setzen (optional)
-            resolver.connect((dns_server, 53))
-            hostname = socket.gethostbyaddr(ip)[0]
-            resolver.close()
-        else:
-            hostname = socket.gethostbyaddr(ip)[0]
-        return hostname
-    except (socket.herror, socket.timeout):
+        subprocess.run(['arping', '-c', '1', '-W', '1', ip], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+        return True
+    except subprocess.CalledProcessError:
+        return False
+
+def get_hostname(ip):
+    try:
+        return socket.gethostbyaddr(ip)[0]
+    except socket.herror:
         return None
 
-def scan_ip(ip, use_ping, use_dns, dns_server, output_file):
+def scan_ip(ip, use_ping, use_arp, resolve_hostname, output_file):
     ip_str = str(ip)
-    try:
-        if use_ping and ping_ip(ip_str):
-            if use_dns:
-                hostname = resolve_hostname(ip_str, dns_server)
-                print(f'[+] {ip_str} - {hostname if hostname else "Unknown"} is {Fore.GREEN}alive{Style.RESET_ALL}')
-                save_ip_to_file(ip_str, hostname, output_file)
+    if use_ping and ping_ip(ip_str):
+        print(f'[+] {Fore.YELLOW}{ip_str}{Style.RESET_ALL} is {Fore.GREEN}alive{Style.RESET_ALL} (Ping)')
+        if resolve_hostname:
+            hostname = get_hostname(ip_str)
+            if hostname:
+                print(f'    - Hostname: {hostname}')
             else:
-                print(f'[+] {ip_str} is {Fore.GREEN}alive{Style.RESET_ALL}')
-                save_ip_to_file(ip_str, None, output_file)
-    except Exception as exc:
-        print(f'Error checking {ip_str}: {exc}')
+                print(f'    - Hostname not found')
+        save_ip_to_file(ip_str, output_file)
+    elif use_arp and arp_ping(ip_str):
+        print(f'[+] {Fore.YELLOW}{ip_str}{Style.RESET_ALL} is {Fore.GREEN}alive{Style.RESET_ALL} (ARP)')
+        if resolve_hostname:
+            hostname = get_hostname(ip_str)
+            if hostname:
+                print(f'    - Hostname: {hostname}')
+            else:
+                print(f'    - Hostname not found')
+        save_ip_to_file(ip_str, output_file)
 
-def save_ip_to_file(ip, hostname, output_file):
+def save_ip_to_file(ip, output_file):
     if output_file:
         with open(output_file, 'a') as file:
-            if hostname:
-                file.write(f'{ip} - {hostname}\n')
-            else:
-                file.write(f'{ip}\n')
+            file.write(f'{ip}\n')
 
 def main():
+    start_time = time.time()
+
     parser = argparse.ArgumentParser(description='IP Sweep Tool')
     parser.add_argument('target', help='Target IP or CIDR range')
     parser.add_argument('-ping', action='store_true', help='Use ping for scanning')
-    parser.add_argument('-dns', action='store_true', help='Resolve IP addresses to hostnames')
-    parser.add_argument('-dns_server', help='DNS server IP address')
+    parser.add_argument('-arp', action='store_true', help='Use ARP for scanning')
+    parser.add_argument('-dns', '--resolve-hostname', action='store_true', help='Resolve hostname for each alive IP address')
     parser.add_argument('-o', '--output', help='Output file for IP addresses')
+    parser.add_argument('-w', '--workers', type=int, default=10, help='Number of parallel workers (default: 10)')
 
     args = parser.parse_args()
 
     target_ip = args.target
     use_ping = args.ping
-    use_dns = args.dns
-    dns_server = args.dns_server
+    use_arp = args.arp
+    resolve_hostname = args.resolve_hostname
     output_file = args.output
+    num_workers = args.workers
 
-    if not use_ping and use_dns:
-        print("Error: Please use -ping when using -dns.")
+    if not any([use_ping, use_arp]):
+        print("Error: Please specify at least one scanning method (-ping, -arp).")
         return
-
-    if use_dns and not dns_server:
-        dns_server = None  # Wenn -dns ohne -dns_server verwendet wird, verwende Standard-DNS-Konfiguration
 
     try:
         network = ip_network(target_ip, strict=False)
@@ -80,14 +82,18 @@ def main():
         print("Error: Invalid IP or CIDR range.")
         return
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
         future_to_ip = {
-            executor.submit(scan_ip, ip, use_ping, use_dns, dns_server, output_file): ip for ip in network.hosts()
+            executor.submit(scan_ip, ip, use_ping, use_arp, resolve_hostname, output_file): ip for ip in network.hosts()
         }
 
     # Wait for all threads to complete
     for future in concurrent.futures.as_completed(future_to_ip):
         future.result()
+
+    end_time = time.time()
+    scan_time = end_time - start_time
+    print(f'Scan completed in {scan_time:.2f} seconds.')
 
 if __name__ == '__main__':
     main()
