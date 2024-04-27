@@ -1,6 +1,6 @@
 import argparse
-import subprocess
 import concurrent.futures
+import subprocess
 from ipaddress import ip_network
 from colorama import Fore, Style
 import time
@@ -12,11 +12,21 @@ def ping_ip(ip):
     except subprocess.CalledProcessError:
         return False
 
-def scan_ip(ip, use_ping, output_file):
+def arp_ping(ip):
+    try:
+        subprocess.run(['arping', '-c', '1', '-W', '1', ip], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+        return True
+    except subprocess.CalledProcessError:
+        return False
+
+def scan_ip(ip, use_ping, use_arp, output_file):
     ip_str = str(ip)
     try:
         if use_ping and ping_ip(ip_str):
-            print(f'[+] {ip_str} is {Fore.GREEN}alive{Style.RESET_ALL}')
+            print(f'[+] {Fore.YELLOW}{ip_str}{Style.RESET_ALL} is {Fore.GREEN}alive{Style.RESET_ALL} (Ping)')
+            save_ip_to_file(ip_str, output_file)
+        elif use_arp and arp_ping(ip_str):
+            print(f'[+] {Fore.YELLOW}{ip_str}{Style.RESET_ALL} is {Fore.GREEN}alive{Style.RESET_ALL} (ARP)')
             save_ip_to_file(ip_str, output_file)
     except Exception as exc:
         print(f'Error checking {ip_str}: {exc}')
@@ -32,6 +42,7 @@ def main():
     parser = argparse.ArgumentParser(description='IP Sweep Tool')
     parser.add_argument('target', help='Target IP or CIDR range')
     parser.add_argument('-ping', action='store_true', help='Use ping for scanning')
+    parser.add_argument('-arp', action='store_true', help='Use ARP for scanning')
     parser.add_argument('-o', '--output', help='Output file for IP addresses')
     parser.add_argument('-w', '--workers', type=int, default=10, help='Number of parallel workers (default: 10)')
 
@@ -39,11 +50,12 @@ def main():
 
     target_ip = args.target
     use_ping = args.ping
+    use_arp = args.arp
     output_file = args.output
     num_workers = args.workers
 
-    if not use_ping:
-        print("Error: Please use -ping.")
+    if not any([use_ping, use_arp]):
+        print("Error: Please specify at least one scanning method (-ping, -arp).")
         return
 
     try:
@@ -54,7 +66,7 @@ def main():
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
         future_to_ip = {
-            executor.submit(scan_ip, ip, use_ping, output_file): ip for ip in network.hosts()
+            executor.submit(scan_ip, ip, use_ping, use_arp, output_file): ip for ip in network.hosts()
         }
 
     # Wait for all threads to complete
