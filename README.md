@@ -34,9 +34,9 @@ sudo python3 sweeper.py 192.168.1.0/24 -arp -w 100 -o output.txt
 ```
 
 ## Parameters
-| **** | **Parameter** | **Description**                                                                                                                              |
-|------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------|
-| [Required] | -ping         | Runs a single ping packet. If response is there -> system is alive.                                                                    |
-| [Required] | -arp          | Runs arp scan. Can be used instead of ping scan. Requires SUDO privileges |
-| [Optional] | -o            | Creates a output.txt file with just the ip addresses, to further usage for example with nmap. |
-| [Optional] | -w            | [Optional] Adjusting the workers for a faster scan. Default = 10 |
+| **Parameter** | **Description**                                                                                                                              |
+|---------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| -ping         | Runs a single ping packet. If response is there -> system is alive.                                                                    |
+| -arp          | Runs arp scan. Can be used instead of ping scan. Requires SUDO privileges |
+| -o            | Creates a output.txt file with just the ip addresses, to further usage for example with nmap. |
+| -w            | [Optional] Adjusting the workers for a faster scan. Default = 10 |
