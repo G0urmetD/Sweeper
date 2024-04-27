@@ -37,6 +37,24 @@ def save_ip_to_file(ip, output_file):
             file.write(f'{ip}\n')
 
 def main():
+    # ASCII banner
+    print(r"""
+     _____                                   
+    /  ___|                                  
+    \ `--.__      _____  ___ _ __   ___ _ __ 
+     `--. \ \ /\ / / _ \/ _ \ '_ \ / _ \ '__|
+    /\__/ /\ V  V /  __/  __/ |_) |  __/ |   
+    \____/  \_/\_/ \___|\___| .__/ \___|_|   
+                            | |              
+                            |_|              
+
+    Auhtor: G0urmetD (403 - Forbidden)
+    Version: 2.1
+    """)
+
+    # Starting Portscan
+    print("========== Starting Portscan ==========")
+    
     start_time = time.time()
 
     parser = argparse.ArgumentParser(description='IP Sweep Tool')
