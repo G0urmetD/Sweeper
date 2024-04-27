@@ -33,18 +33,18 @@ def scan_ip(ip, use_ping, use_arp, resolve_hostname, output_file):
         if resolve_hostname:
             hostname = get_hostname(ip_str)
             if hostname:
-                print(f'    - Hostname: {hostname}')
+                print(f'    - {Fore.GREEN}[+]{Style.RESET_ALL} Hostname: {hostname}')
             else:
-                print(f'    - Hostname not found')
+                print(f'    - {Fore.RED}[-]{Style.RESET_ALL} Hostname not found')
         save_ip_to_file(ip_str, output_file)
     elif use_arp and arp_ping(ip_str):
         print(f'[+] {Fore.YELLOW}{ip_str}{Style.RESET_ALL} is {Fore.GREEN}alive{Style.RESET_ALL} (ARP)')
         if resolve_hostname:
             hostname = get_hostname(ip_str)
             if hostname:
-                print(f'    - Hostname: {hostname}')
+                print(f'    - {Fore.GREEN}[+]{Style.RESET_ALL} Hostname: {hostname}')
             else:
-                print(f'    - Hostname not found')
+                print(f'    - {Fore.RED}[-]{Style.RESET_ALL} Hostname not found')
         save_ip_to_file(ip_str, output_file)
 
 def save_ip_to_file(ip, output_file):
