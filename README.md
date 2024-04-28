@@ -1,7 +1,8 @@
 # Sweeper
 ![](radar.png)
 ## Description
-<p>Sweeper is a small commandline tool, to ping sweep a network or single ip address.</p>
+<p>Sweeper is a small ping sweep tool. It uses ICMP or ARP as packets to find active hosts in a network.
+It is possible to set the workers for faster scans and create an output file with only the IP addresses to pass on to other tools.</p>
 
 ## Features
 - Ping sweep with ICMP packets
