@@ -2,7 +2,7 @@ import argparse
 import concurrent.futures
 import subprocess
 import socket
-import nmap  # Installiere nmap mit pip install python-nmap
+import nmap 
 from ipaddress import ip_network
 from colorama import Fore, Style
 import time
@@ -32,7 +32,7 @@ def get_host_info(ip):
 
 def get_open_ports(ip):
     nm = nmap.PortScanner()
-    nm.scan(ip, arguments='-p 1-65535 --open')  # Scan für offene Ports auf allen Ports
+    nm.scan(ip, arguments='-p 1-2500 --open')
     open_ports = []
     for proto in nm[ip].all_protocols():
         ports = nm[ip][proto].keys()
@@ -85,9 +85,6 @@ def main():
     Auhtor: G0urmetD (403 - Forbidden)
     Version: 2.1
     """)
-
-    # Starting Portscan
-    print("========== Starting Portscan ==========")
     
     start_time = time.time()
 
