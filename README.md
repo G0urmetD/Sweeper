@@ -32,6 +32,11 @@ python3 sweeper.py 192.168.1.0/24 -ping -w 30 -o output.txt
 sudo python3 sweeper.py 192.168.1.0/24 -arp
 sudo python3 sweeper.py 192.168.1.0/24 -arp -o output.txt
 sudo python3 sweeper.py 192.168.1.0/24 -arp -w 100 -o output.txt
+
+# using nmap to get more information about the host
+python3 sweeper.py 192.168.1.0/24 -ping -info
+python3 sweeper.py 192.168.1.0/24 -ping -info -w 50
+python3 sweeper.py 192.168.1.0/24 -ping -info -w 50 -o output.txt
 ```
 
 ## Parameters
@@ -41,3 +46,4 @@ sudo python3 sweeper.py 192.168.1.0/24 -arp -w 100 -o output.txt
 | -arp          | Runs arp scan. Can be used instead of ping scan. Requires SUDO privileges |
 | -o            | Creates a output.txt file with just the ip addresses, to further usage for example with nmap. |
 | -w            | [Optional] Adjusting the workers for a faster scan. Default = 10 |
+| -info         | [Optional] Run a nmap scan to fetch more information about the target |
