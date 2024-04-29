@@ -32,17 +32,24 @@ def resolve_hostname(ip, dns_server=None):
     except socket.herror:
         return None
 
-def scan_ip(ip, use_ping, use_arp, reachable_ips):
+def scan_ip(ip, use_ping, use_arp, reachable_ips, output_file):
     ip_str = str(ip)
     try:
         if use_ping and ping_ip(ip_str):
             print(f'{Fore.GREEN}[+] {Fore.YELLOW}{ip_str}{Style.RESET_ALL} is {Fore.GREEN}alive{Style.RESET_ALL} (Ping)')
             reachable_ips.add(ip_str)
+            save_ip_to_file(ip_str, output_file)
         elif use_arp and arp_ping(ip_str):
             print(f'{Fore.GREEN}[+] {Fore.YELLOW}{ip_str}{Style.RESET_ALL} is {Fore.GREEN}alive{Style.RESET_ALL} (ARP)')
             reachable_ips.add(ip_str)
+            save_ip_to_file(ip_str, output_file)
     except Exception as exc:
         print(f'Error checking {ip_str}: {exc}')
+        
+def save_ip_to_file(ip, output_file):
+    if output_file:
+        with open(output_file, 'a') as file:
+            file.write(f'{ip}\n')
 
 def main():
     # ASCII banner
@@ -101,7 +108,7 @@ def main():
     # Perform the sweep
     with concurrent.futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
         future_to_ip = {
-            executor.submit(scan_ip, ip, use_ping, use_arp, reachable_ips): ip for ip in network.hosts()
+            executor.submit(scan_ip, ip, use_ping, use_arp, reachable_ips, output_file): ip for ip in network.hosts()
         }
 
     # Wait for all threads to complete
