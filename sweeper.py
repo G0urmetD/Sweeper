@@ -64,7 +64,7 @@ def main():
                             |_|              
 
     Auhtor: G0urmetD (403 - Forbidden)
-    Version: 3.1
+    Version: 3.3.2
     """)
 
     print("========== Starting Sweep ==========")
