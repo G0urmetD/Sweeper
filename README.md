@@ -39,6 +39,41 @@ sudo python3 sweeper.py 192.168.1.0/24 -arp -w 100 -o output.txt
 [sudo] python3 sweeper.py 192.168.1.0/24 -ping/-arp [-o output.txt | -w 50] -dns -dns-server 192.168.1.1
 ```
 
+## Help
+```bash
+     _____                                   
+    /  ___|                                  
+    \ `--.__      _____  ___ _ __   ___ _ __ 
+     `--. \ \ /\ / / _ \/ _ \ '_ \ / _ \ '__|
+    /\__/ /\ V  V /  __/  __/ |_) |  __/ |   
+    \____/  \_/\_/ \___|\___| .__/ \___|_|   
+                            | |              
+                            |_|              
+
+    Auhtor: G0urmetD (403 - Forbidden)
+    Version: 3.3.2
+    
+========== Starting Sweep ==========
+usage: sweeper.py [-h] [-ping] [-arp] [-dns] [-dns-server DNS_SERVER] [-o OUTPUT] [-w WORKERS] target
+
+IP Sweep Tool
+
+positional arguments:
+  target                Target IP or CIDR range
+
+options:
+  -h, --help            show this help message and exit
+  -ping                 Use ping for scanning
+  -arp                  Use ARP for scanning
+  -dns                  Resolve IP addresses to hostnames
+  -dns-server DNS_SERVER
+                        Custom DNS server for hostname resolution (only applicable with -dns)
+  -o OUTPUT, --output OUTPUT
+                        Output file for IP addresses
+  -w WORKERS, --workers WORKERS
+                        Number of parallel workers (default: 10)
+```
+
 ## Parameters
 | **Parameter** | **Description**                                                                                                                              |
 |---------------|----------------------------------------------------------------------------------------------------------------------------------------------|
