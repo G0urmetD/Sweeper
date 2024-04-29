@@ -26,12 +26,15 @@ python3 sweeper.py 192.168.1.0/24 -ping -o output.txt
 
 # default ping sweep and adjusting the workers for a faster scan
 python3 sweeper.py 192.168.1.0/24 -ping -w 30
-python3 sweeper.py 192.168.1.0/24 -ping -w 30 -o output.txt
 
 # using arp instead of ping [requires sudo privileges]
 sudo python3 sweeper.py 192.168.1.0/24 -arp
 sudo python3 sweeper.py 192.168.1.0/24 -arp -o output.txt
 sudo python3 sweeper.py 192.168.1.0/24 -arp -w 100 -o output.txt
+
+# DNS feature
+[sudo] python3 sweeper.py 192.168.1.0/24 -ping/-arp -dns
+[sudo] python3 sweeper.py 192.168.1.0/24 -ping/-arp [-o output.txt | -w 50] -dns -dns-server 192.168.1.1
 ```
 
 ## Parameters
@@ -41,3 +44,5 @@ sudo python3 sweeper.py 192.168.1.0/24 -arp -w 100 -o output.txt
 | -arp          | Runs arp scan. Can be used instead of ping scan. Requires SUDO privileges |
 | -o            | Creates a output.txt file with just the ip addresses, to further usage for example with nmap. |
 | -w            | [Optional] Adjusting the workers for a faster scan. Default = 10 |
+| -dns          | [Optional] DNS reverse lookup |
+| -dns-server   | [Optional] Custom dns-server. Only usable with -dns |
