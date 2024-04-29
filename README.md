@@ -10,6 +10,8 @@ It is possible to set the workers for faster scans and create an output file wit
 - Adjusting the workers for a faster scan
 - Showing scan time
 - Colorized commandline output
+- DNS Reverse Lookup for reachable ip addresses
+- Customize DNS server for DNS lookup
 
 ## Installation
 ```bash
