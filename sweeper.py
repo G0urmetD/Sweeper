@@ -53,7 +53,7 @@ def main():
     """)
 
     # Starting Portscan
-    print("========== Starting Sweep {args} ==========")
+    print("========== Starting Sweep ==========")
     
     start_time = time.time()
 
