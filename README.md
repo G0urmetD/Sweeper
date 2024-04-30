@@ -73,13 +73,3 @@ options:
   -w WORKERS, --workers WORKERS
                         Number of parallel workers (default: 10)
 ```
-
-## Parameters
-| **Parameter** | **Description**                                                                                                                              |
-|---------------|----------------------------------------------------------------------------------------------------------------------------------------------|
-| -ping         | Runs a single ping packet. If response is there -> system is alive.                                                                    |
-| -arp          | Runs arp scan. Can be used instead of ping scan. Requires SUDO privileges |
-| -o            | [Optional] Creates a output.txt file with just the ip addresses, to further usage for example with nmap. |
-| -w            | [Optional] Adjusting the workers for a faster scan. Default = 10 |
-| -dns          | [Optional] DNS reverse lookup |
-| -dns-server   | [Optional] Custom dns-server. Only usable with -dns |
