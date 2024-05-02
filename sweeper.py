@@ -63,7 +63,7 @@ def main():
                             | |              
                             |_|              
 
-    Auhtor: G0urmetD (403 - Forbidden)
+    Author: G0urmetD (403 - Forbidden)
     Version: 3.3.2
     """)
 
