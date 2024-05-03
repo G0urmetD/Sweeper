@@ -22,17 +22,6 @@ def arp_ping(ip):
     except subprocess.CalledProcessError:
         return False
 
-#def resolve_hostname(ip, dns_server=None):
-#    try:
-#        if dns_server:
-#            resolver = socket.getaddrinfo(ip, None)[0]
-#            hostname = resolver[3]
-#        else:
-#            hostname = socket.gethostbyaddr(ip)[0]
-#        return hostname
-#    except (socket.herror, IndexError):
-#        return None
-
 def resolve_hostname(ip, dns_server=None):
     try:
         if dns_server:
