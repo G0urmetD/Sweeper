@@ -12,6 +12,7 @@ It is possible to set the workers for faster scans and create an output file wit
 - Colorized commandline output
 - DNS Reverse Lookup for reachable ip addresses
 - Customize DNS server for DNS lookup
+- OS detection with nmap
 
 ## Installation
 ```bash
