@@ -41,6 +41,7 @@ sudo python3 sweeper.py 192.168.1.0/24 -arp -w 100 -o output.txt
 
 ## Help
 ```bash
+
      _____                                   
     /  ___|                                  
     \ `--.__      _____  ___ _ __   ___ _ __ 
@@ -50,11 +51,11 @@ sudo python3 sweeper.py 192.168.1.0/24 -arp -w 100 -o output.txt
                             | |              
                             |_|              
 
-    Auhtor: G0urmetD (403 - Forbidden)
-    Version: 3.3.2
+    Author: G0urmetD (403 - Forbidden)
+    Version: 3.5.7
     
 ========== Starting Sweep ==========
-usage: sweeper.py [-h] [-ping] [-arp] [-dns] [-dns-server DNS_SERVER] [-o OUTPUT] [-w WORKERS] target
+usage: sweeper-os2.py [-h] [-ping] [-arp] [-dns] [-dns-server DNS_SERVER] [-os] [-o OUTPUT] [-w WORKERS] target
 
 IP Sweep Tool
 
@@ -68,6 +69,7 @@ options:
   -dns                  Resolve IP addresses to hostnames
   -dns-server DNS_SERVER
                         Custom DNS server for hostname resolution (only applicable with -dns)
+  -os                   Activate OS detection with nmap.
   -o OUTPUT, --output OUTPUT
                         Output file for IP addresses
   -w WORKERS, --workers WORKERS
