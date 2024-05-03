@@ -4,7 +4,7 @@
 <p>Sweeper is a small ping sweep tool. It uses ICMP or ARP as packets to find active hosts in a network.
 It is possible to set the workers for faster scans and create an output file with only the IP addresses to pass on to other tools.</p>
 
-## Features
+## :black_joker: Features
 - Ping sweep with ICMP packets
 - Output possibility with only the ip addresses to hand them over to other tools
 - Adjusting the workers for a faster scan
@@ -14,12 +14,12 @@ It is possible to set the workers for faster scans and create an output file wit
 - Customize DNS server for DNS lookup
 - OS detection with nmap
 
-## Installation
+## :coffee: Installation
 ```bash
 pip3 install -r requirements.txt
 ```
 
-## Usage
+## :bookmark_tabs: Usage
 ```bash
 # default ping sweep
 python3 sweeper.py 192.168.1.0/24 -ping
@@ -46,7 +46,7 @@ sudo python3 sweeper.py 192.168.1.0/24 -arp -w 100 -o output.txt
 [sudo] python3 sweeper.py 192.168.1.0/24 -ping/-arp -os
 ```
 
-## Help
+## :question: Help
 ```bash
 
      _____                                   
