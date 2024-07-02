@@ -1,7 +1,7 @@
 # Sweeper
 ![](radar.png)
 ## Description
-<p>Sweeper is a small ping sweep tool. It uses ICMP or ARP as packets to find active hosts in a network.
+<p>Sweeper is a ping sweep tool. It uses ICMP or ARP as packets to find active hosts in a network.
 It is possible to set the workers for faster scans and create an output file with only the IP addresses to pass on to other tools.</p>
 
 ## :black_joker: Features
