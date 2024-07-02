@@ -108,7 +108,7 @@ def main():
                             |_|              
 
     Author: G0urmetD (403 - Forbidden)
-    Version: 3.5.7
+    Version: 3.5.8
     """)
 
     print("========== Starting Sweep ==========")
