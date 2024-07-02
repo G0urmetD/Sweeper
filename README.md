@@ -16,7 +16,7 @@ It is possible to set the workers for faster scans and create an output file wit
 
 ## :coffee: Installation
 ```bash
-pip3 install -r requirements.txt
+sudo pip3 install -r requirements.txt
 ```
 
 ## :bookmark_tabs: Usage
