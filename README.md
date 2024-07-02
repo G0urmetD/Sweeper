@@ -59,10 +59,10 @@ sudo python3 sweeper.py 192.168.1.0/24 -arp -w 100 -o output.txt
                             |_|              
 
     Author: G0urmetD (403 - Forbidden)
-    Version: 3.5.7
+    Version: 3.5.8
     
 ========== Starting Sweep ==========
-usage: sweeper-os2.py [-h] [-ping] [-arp] [-dns] [-dns-server DNS_SERVER] [-os] [-o OUTPUT] [-w WORKERS] target
+usage: sweeper.py [-h] [-ping] [-arp] [-dns] [-dns-server DNS_SERVER] [-os] [-o OUTPUT] [-w WORKERS] target
 
 IP Sweep Tool
 
